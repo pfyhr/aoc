@@ -51,21 +51,32 @@ int readFile(char *filename, int window)
     return retval;
 }
 
-int main()
+int main(int argc, char *argv[])
 {
     int retval = 1;
-
     int movWind;
-    char filename[100];
+    //char filename[100];
 
-    printf( "input filename " );
-    scanf("%s %d", &filename[0], &movWind);
-
-    printf( "\ninput is: %s", filename);
-    printf( " and window is: %d", movWind);
-    printf( "\n");
-
-    retval = readFile(&filename[0], movWind);
+    if (argc > 3)
+    {
+        printf("Too many arguments, usage is: ./depth.out path/to/file.txt n\n");
+    }
+    else if (argc > 2)
+    {
+        sscanf (argv[2], "%d", &movWind);
+        retval = readFile(argv[1], movWind);
+    }
+    else if (argc > 1)
+    {
+        movWind = 1;
+        printf("too few arguments, defaulting to window size = 1\n");
+        retval = readFile(argv[1], movWind);
+    }
+    else
+    {
+        printf("no input file provided, usage is: ./depth.out path/to/file.txt n\n");
+    }
+    
 
     return retval;
 }
