@@ -10,6 +10,7 @@ int arraysum(int arr[], int window, int iter)
     }
     return sum;
 }
+
 int readFile(char *filename, int window)
 {
     int retval = 1;
@@ -29,28 +30,27 @@ int readFile(char *filename, int window)
     }
     while ( fscanf(fp, "%d", &buff) == 1)
     {
+        prev[window] = buff;
         if ( ticker < window )
         {
         } /*do nothing*/
         else
         {
-            //printf( "a1=%d a2=%d\n", arraysum(prev, window, 0),arraysum(prev, window+1, 1) );
-            /*do poppy things here */
             if ( arraysum(prev, window, 0) < arraysum(prev, window+1, 1) )
             {
                 cnt++;
             }
-            memmove( &prev[0], &prev[1], (window) * sizeof(int) );
-            prev[window] = buff;
         }
+        /*do poppy things here */
+        memmove( &prev[0], &prev[1], (window) * sizeof(int) );
         ticker++;
-        //printf( "%d\n",prev[window]);
     }
     retval = fclose(fp);
 
     printf( "cnt is: %d", cnt);
     return retval;
 }
+
 int main()
 {
     int retval = 1;
