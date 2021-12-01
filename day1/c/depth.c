@@ -1,13 +1,26 @@
 #include <stdio.h>
+#include <string.h>
 
-int readFile(char *filename)
+int arraysum(int arr[], int window, int iter)
+{
+    int sum=0;
+    for ( iter; iter<window; iter++)
+    {
+        sum += arr[iter];
+    }
+    return sum;
+}
+int readFile(char *filename, int window)
 {
     int retval = 1;
     int cnt;
+    int ticker;
     cnt = 0;
+    ticker = 0;
     FILE *fp;
     int buff;
-    int prev=0;
+    int prev[10] = { 0 };
+
     fp = fopen(filename, "r");
     if (fp == NULL)
     {
@@ -16,16 +29,22 @@ int readFile(char *filename)
     }
     while ( fscanf(fp, "%d", &buff) == 1)
     {
-        if (prev==0)
+        if ( ticker < window )
         {
-            prev=buff;
-        }
-        if ( buff > prev )
+        } /*do nothing*/
+        else
         {
-            cnt++;
+            //printf( "a1=%d a2=%d\n", arraysum(prev, window, 0),arraysum(prev, window+1, 1) );
+            /*do poppy things here */
+            if ( arraysum(prev, window, 0) < arraysum(prev, window+1, 1) )
+            {
+                cnt++;
+            }
+            memmove( &prev[0], &prev[1], (window) * sizeof(int) );
+            prev[window] = buff;
         }
-        prev=buff;
-        //printf( "%s",buff);
+        ticker++;
+        //printf( "%d\n",prev[window]);
     }
     retval = fclose(fp);
 
@@ -46,7 +65,7 @@ int main()
     printf( " and window is: %d", movWind);
     printf( "\n");
 
-    retval = readFile(&filename[0]);
+    retval = readFile(&filename[0], movWind);
 
     return retval;
 }
