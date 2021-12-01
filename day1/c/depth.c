@@ -55,11 +55,10 @@ int main(int argc, char *argv[])
 {
     int retval = 1;
     int movWind;
-    //char filename[100];
 
     if (argc > 3)
     {
-        printf("Too many arguments, usage is: ./depth.out path/to/file.txt n\n");
+        printf("Too many arguments, usage is: ./depth path/to/file.txt n\n");
     }
     else if (argc > 2)
     {
@@ -74,9 +73,8 @@ int main(int argc, char *argv[])
     }
     else
     {
-        printf("no input file provided, usage is: ./depth.out path/to/file.txt n\n");
+        printf("no input file provided, usage is: ./depth path/to/file.txt n\n");
     }
-    
 
     return retval;
 }
