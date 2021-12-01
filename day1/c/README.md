@@ -2,12 +2,8 @@
 
 compile with gcc:
 
-$ gcc depth.c
+$ gcc depth.c -o depth
 
 run in a terminal:
 
-$ ./a.out
-
-input the file and some number
-
-$ ../input.txt 5
+$ ./depth ../input.txt 3
