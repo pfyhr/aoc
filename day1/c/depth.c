@@ -47,7 +47,7 @@ int readFile(char *filename, int window)
     }
     retval = fclose(fp);
 
-    printf( "cnt is: %d", cnt);
+    printf( "cnt is: %d\n", cnt);
     return retval;
 }
 
