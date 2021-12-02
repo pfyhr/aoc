@@ -1,16 +1,6 @@
 #include <stdio.h>
 #include <string.h>
 
-int arraysum(int arr[], int window, int iter)
-{
-    int sum=0;
-    for ( iter; iter<window; iter++)
-    {
-        sum += arr[iter];
-    }
-    return sum;
-}
-
 int readFile(char *filename)
 {
     static int retval = 1;
@@ -24,9 +14,9 @@ int readFile(char *filename)
     ypos = 0;
     aim = 0;
     cnt = 0;
-    FILE *fp;
-    char direction[16];
-    char temp[16];
+    static FILE *fp;
+    static char direction[16];
+    static char temp[16];
 
     fp = fopen(filename, "r");
     if (fp == NULL)
