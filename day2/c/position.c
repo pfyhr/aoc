@@ -17,10 +17,12 @@ int readFile(char *filename)
     int stepl;
     int xpos;
     int ypos;
+    int aim;
     int cnt = 0;
     stepl = 0;
     xpos = 0;
     ypos = 0;
+    aim = 0;
     FILE *fp;
     char direction[16];
     char temp[16];
@@ -36,17 +38,18 @@ int readFile(char *filename)
         /*do poppy things here */
         //sscanf( direction, "%s %d", temp, &stepl);
         //printf("direction is %s stepl is %d \n", temp, stepl);
-        if (direction[0] == 102)
+        if (direction[0] == 102) /* forward */
         {
             xpos += stepl;
+            ypos += aim * stepl;
         }
-        else if (direction[0] == 117)
+        else if (direction[0] == 117) /* up aim */
         {
-            ypos -= stepl;
+            aim -= stepl;
         }
-        else if (direction[0] == 100)
+        else if (direction[0] == 100) /* down aim */
         {
-            ypos += stepl;
+            aim += stepl;
         }
         else
         {
