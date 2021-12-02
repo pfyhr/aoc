@@ -13,16 +13,17 @@ int arraysum(int arr[], int window, int iter)
 
 int readFile(char *filename)
 {
-    int retval = 1;
-    int stepl;
-    int xpos;
-    int ypos;
-    int aim;
-    int cnt = 0;
+    static int retval = 1;
+    static int stepl;
+    static int xpos;
+    static int ypos;
+    static int aim;
+    static int cnt;
     stepl = 0;
     xpos = 0;
     ypos = 0;
     aim = 0;
+    cnt = 0;
     FILE *fp;
     char direction[16];
     char temp[16];
@@ -35,9 +36,6 @@ int readFile(char *filename)
     }
     while ( fscanf(fp, "%s %d", direction, &stepl) != EOF)
     {
-        /*do poppy things here */
-        //sscanf( direction, "%s %d", temp, &stepl);
-        //printf("direction is %s stepl is %d \n", temp, stepl);
         if (direction[0] == 102) /* forward */
         {
             xpos += stepl;
@@ -67,18 +65,12 @@ int readFile(char *filename)
 
 int main(int argc, char *argv[])
 {
-    int retval = 1;
-    int movWind;
+    static int retval = 1;
 
     if (argc > 2)
     {
         printf("Too many arguments, usage is: ./depth path/to/file.txt n\n");
     }
-    /*else if (argc > 2)
-    {
-        sscanf (argv[2], "%d", &movWind);
-        retval = readFile(argv[1], movWind);
-    }*/
     else if (argc > 1)
     {
         retval = readFile(argv[1]);
