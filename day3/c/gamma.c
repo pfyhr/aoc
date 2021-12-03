@@ -2,20 +2,13 @@
 #include <string.h>
 #include <stdlib.h>
 
-int gammaRate(long int input[1000])
+int * bitCnts(long int input[1000])
 {
-    static int cnt;
-    static int bit, bit2;
-    static int gamma = 0;
-    static int epsilon = 0;
-    cnt = 0;
     static int bincnts[12] = {0};
-
-    static char * pEnd;
-    for (cnt; cnt<1000; cnt++)
+    for (int cnt=0; cnt<1000; cnt++)
     {
-        printf("input[cnt] is: %ld\n", input[cnt]);
-        for (bit=0; bit != 12; bit++)
+        //printf("input[cnt] is: %ld\n", input[cnt]);
+        for (int bit=0; bit != 12; bit++)
         {
             if ( input[cnt] & (1 << bit) ) /* if the value at bit is 1, increment counter */
             {
@@ -23,7 +16,18 @@ int gammaRate(long int input[1000])
             }
         }
     }
-    for (bit=0; bit != 12; bit++)
+    return bincnts;
+}
+int gammaRate(long int input[1000])
+{
+    static int gamma = 0;
+    static int epsilon = 0;
+    static char * pEnd;
+    static int *bincnts;
+
+    bincnts = bitCnts(input);
+    
+    for (int bit=0; bit != 12; bit++)
     {
         printf("bincnts for bit %d is %d\n", bit, bincnts[bit]);
         if ( bincnts[bit] > 500)
@@ -37,25 +41,58 @@ int gammaRate(long int input[1000])
             epsilon |= (1 << bit);
         }
     }
-    printf("gamma as int is:%d, eps %d, power = %d\n", gamma, epsilon, gamma * epsilon);
-    //printf("integer gamma is %ld\n", strtol( gamma, &pEnd, 2) );
-
+    printf("gamma as int is: %d, eps %d, power = %d\n", gamma, epsilon, gamma * epsilon);
     return (int) gamma;
 }
+int cumsum(int maxval)
+{
+    int value = 0;
+    for (int counter=0; counter < maxval; counter++)
+    {
+        value += counter;
+    }
+    return value;
+}
+int lifeSupp(long int input[1000], int cnt)
+{
+    static int *bincnts = NULL;
+    bincnts = bitCnts(input);
+    static int o2cands; /* 500500 magic index number */
+    static int co2cands;
+    static int o2 = 0;
+    static int co2 = 0;
+    static int row = 0;
+    static int bit = 0;
+    static int hexmax = 0x7F; //0xFFF
+
+    printf("%d\n",cnt);
+    o2cands = cumsum(cnt);
+    co2cands = o2cands;
+    printf("o2cands=%d\n", o2cands);
+
+    while (o2cands >= cnt )
+    {
+        /* Do the stuff here */ 
+        if (row < cnt)
+        {
+            row++;
+        }
+        else
+        {
+            row = 0;
+            bit++;
+        }
+    }
+    //printf("o2 is %ld, co2 is %ld, rating is %ld\n", input[o2cands], input[co2cands], input[o2cands] * input[co2cands]);
+    printf("o2 is %ld, pos is %d \n", input[o2cands], o2cands);
+}
+
 
 int readFile(char *filename, int problem)
 {
     static int retval = 1;
-    static int stepl;
-    static int xpos;
-    static int ypos;
-    static int aim;
     static int cnt;
     static int gamma;
-    stepl = 0;
-    xpos = 0;
-    ypos = 0;
-    aim = 0;
     cnt = 0;
     static FILE *fp;
     static char binLine[12];
@@ -80,15 +117,24 @@ int readFile(char *filename, int problem)
             printf("unknown instruction read");
             return 1;
         }
-        stepl = 0;
         cnt++;
     }
 
     retval = fclose(fp);
-    
-    gamma = gammaRate(bits);
+    if (problem == 1)
+    {
+        gamma = gammaRate(bits);
+    }
+    else if (problem == 2)
+    {
+        lifeSupp(bits, cnt);
+    }
+    else
+    {
+        printf("Unknown problem, exiting\n");
+        return 0;
+    }
     printf( "%d lines read\n", cnt);
-    printf( "last interpreted int is: %ld\n", bits[cnt-1]);
     return retval;
 }
 
