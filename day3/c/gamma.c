@@ -18,6 +18,20 @@ int * bitCnts(long int input[1000])
     }
     return bincnts;
 }
+
+int posBitCnt(long int input[1000], int rows, int pos)
+{
+    static int bits = 0;
+    for (int row=0; row < rows; row++)
+    {
+        if ( (input[row] >> pos-1)  & 1 )
+        {
+            bits += 1;
+        }
+    }
+    return bits;
+}
+
 int gammaRate(long int input[1000])
 {
     static int gamma = 0;
@@ -44,6 +58,7 @@ int gammaRate(long int input[1000])
     printf("gamma as int is: %d, eps %d, power = %d\n", gamma, epsilon, gamma * epsilon);
     return (int) gamma;
 }
+
 int cumsum(int maxval)
 {
     int value = 0;
@@ -53,26 +68,50 @@ int cumsum(int maxval)
     }
     return value;
 }
+
 int lifeSupp(long int input[1000], int cnt)
 {
     static int *bincnts = NULL;
-    bincnts = bitCnts(input);
-    static int o2cands; /* 500500 magic index number */
-    static int co2cands;
     static int o2 = 0;
     static int co2 = 0;
     static int row = 0;
     static int bit = 0;
-    static int hexmax = 0x7F; //0xFFF
+    static int ones;
+    static long int o2cands[1000];
+    static int hexmax = 5; //0xFFF
+    static int shift = 4; 
 
     printf("%d\n",cnt);
-    o2cands = cumsum(cnt);
-    co2cands = o2cands;
-    printf("o2cands=%d\n", o2cands);
-
-    while (o2cands >= cnt )
+    for (int loop=0; loop < cnt; loop++)
     {
-        /* Do the stuff here */ 
+        o2cands[loop] = input[loop];
+        //same for co2cands
+    }
+
+    while ( row < cnt-1)
+    {
+        /* Do the stuff here */
+        ones = posBitCnt(o2cands, cnt, hexmax);
+        printf("ones =%d\n", ones);
+        /* if ones > cnt/2 keep ones*/
+        if ( ones > cnt/2)
+        {
+            printf("searching for 1 at hexmax\n");
+            if ( (o2cands[row] >> shift) & 1)
+            {
+                /*keep the value*/
+            }
+            else
+            {
+                o2cands[row] = 0;    
+            }
+        }
+        else
+        {
+            printf("searching for 0 at hexmax\n");
+        }
+        /*index the bitshift to one less*/
+        /*shift the array up and reduce cnt */
         if (row < cnt)
         {
             row++;
@@ -84,7 +123,7 @@ int lifeSupp(long int input[1000], int cnt)
         }
     }
     //printf("o2 is %ld, co2 is %ld, rating is %ld\n", input[o2cands], input[co2cands], input[o2cands] * input[co2cands]);
-    printf("o2 is %ld, pos is %d \n", input[o2cands], o2cands);
+    //printf("o2 is %ld, pos is %d \n", input[o2cands], o2cands);
 }
 
 
