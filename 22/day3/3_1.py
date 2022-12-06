@@ -21,7 +21,7 @@ def ch2num(chin):
         if ch == chin:
             retind = i
             break
-    return retind+1
+    return retind+1 #the enumerate indices start at 0...
 
 def numberify(dupeslist):
     val = 0
