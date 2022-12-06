@@ -13,7 +13,6 @@ def findcharin(str1, str2):
     for char in str1:
         if (char in str2) and (char not in dupes):
             dupes += char
-    print(dupes)
     return dupes
 
 def ch2num(chin):
@@ -27,10 +26,7 @@ def ch2num(chin):
 def numberify(dupeslist):
     val = 0
     for char in dupeslist:
-        if char.isupper():
-            val += ch2num(char)
-        else:
-            val += ch2num(char)
+        val += ch2num(char)
     return val
 
 
