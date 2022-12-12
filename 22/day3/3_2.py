@@ -1,7 +1,5 @@
 import string
 
-
-
 def findcharin(str1, str2):
     dupes = ''
     for char in str1:
@@ -27,8 +25,10 @@ def numberify(dupeslist):
 
 priosum = 0
 with open('day3/input.txt') as file:
+    #read the lines
     lines = file.readlines()
 
+    #initialize some useful helpers
     grplinecount = 0
     oldline = ''
     dupes = ''
@@ -40,17 +40,14 @@ with open('day3/input.txt') as file:
             dupes = findcharin(oldline, line)
         elif grplinecount%3 == 0:
             badge = findcharin(dupes, line)
-            print(badge)
             val = numberify(badge)
             priosum += val
+
             dupes = ''       #set these to blank to reset the grp count thing
             oldline = ''     #also this
             grplinecount = 0 #also this
         else:
             oldline = line
-
-            
-        
 
 print(priosum)
 
