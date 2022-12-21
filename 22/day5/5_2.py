@@ -32,9 +32,12 @@ def parseInstruction(line):
     return nr, fr, to
 
 def execInstruction(nr, fr, to):
+    taken = []
     for n in range(nr):
-        taken = blocks[fr-1].pop()
-        blocks[to-1].append(taken)
+        taken.append(blocks[fr-1].pop())
+    for n in range(nr):
+        putback = taken.pop()
+        blocks[to-1].append(putback)
 
 def printState(blocks):
     for idx, line in enumerate(blocks):
