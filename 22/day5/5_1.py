@@ -57,8 +57,9 @@ with open('day5/input.txt') as file:
         execInstruction(nr, fr, to)
         printState(blocks)
     
+    #extract the results!
     result = ''
     for thing in blocks:
         result += thing.pop().strip('[').strip(']')
-    print(result)
+    print('result is: ', result)
     
